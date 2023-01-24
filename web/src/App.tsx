@@ -1,4 +1,5 @@
 import './styles/global.css';
+import './lib/dayjs'
 import { Header } from "./components/Header";
 import { SummaryTable } from "./components/SummaryTable";
 
@@ -14,9 +15,3 @@ export function App() {
     </div>
   )
 }
-
-
-
-
-//Componente: Reaproveitar/ isolar
-// Propriedade: Uma informação enviada para modificar um componente visual ou comportamentalmente

@@ -42,10 +42,9 @@ export async function appRoutes(app: FastifyInstance) {
     const weekDay = parsedDate.get('day')
 
     const possibleHabits = await prisma.habit.findMany({
-      
       where: {
         created_at: {
-          lte: date,          
+          lte: date,
         },
         weekDays: {
           some: {
@@ -66,7 +65,7 @@ export async function appRoutes(app: FastifyInstance) {
 
     const completedHabits = day?.dayHabits.map(dayHabit => {
       return dayHabit.habit_id
-    })
+    }) ?? []
 
     return {
       possibleHabits,
@@ -122,10 +121,6 @@ export async function appRoutes(app: FastifyInstance) {
     }
   })
 
-  app.get('/habits/:id/toggle', async () => {
-
-  })
-
   app.get('/summary', async () => {
     const summary = await prisma.$queryRaw`
       SELECT 
@@ -141,7 +136,7 @@ export async function appRoutes(app: FastifyInstance) {
           SELECT
             cast(count(*) as float)
           FROM habit_week_days HDW
-          JOIN habits H            
+          JOIN habits H
             ON H.id = HDW.habit_id
           WHERE
             HDW.week_day = cast(strftime('%w', D.date/1000.0, 'unixepoch') as int)
